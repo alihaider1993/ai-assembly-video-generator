@@ -14,11 +14,15 @@
 - [Why](#why)
 - [Try it](#try-it)
 - [What it does](#what-it-does)
+- [How it works: the AI pipeline](#how-it-works-the-ai-pipeline)
 - [Examples](#examples)
 - [What it can build](#what-it-can-build)
 - [Inside a video](#inside-a-video)
 - [The website](#the-website)
 - [Limits](#limits)
+- [How the project grew](#how-the-project-grew)
+- [Lessons learned](#lessons-learned)
+- [Roadmap](#roadmap)
 - [FAQ](#faq)
 - [Tech stack](#tech-stack)
 - [Author](#author)
@@ -26,6 +30,8 @@
 ## Why
 
 Flat-pack manuals have no words. A few line drawings carry every step, and it is easy to misread which panel faces which way, which of five similar screws goes where, or what "x4" refers to. A short video that shows each part moving into place, with the step written underneath, is much easier to follow. This project makes that video from the manual itself, for any product, with no hand animation.
+
+It started when I moved to the UK. Almost everything I bought needed self-assembly, and working out the diagrams often took longer than building the thing. One misread step meant undoing the work and starting again. I looked for assembly videos on YouTube, but for many products there were none. So I asked: **what if AI could read any assembly manual and make the video automatically?**
 
 ## Try it
 
@@ -43,6 +49,64 @@ Flat-pack manuals have no words. A few line drawings carry every step, and it is
 5. **Delivers an MP4** with the product's name at the top and every step captioned, ready to watch or download.
 
 ![Studio: the manual page, the video and the steps in sync](assets/studio.png)
+
+## How it works: the AI pipeline
+
+The pipeline does not jump straight from a PDF to an animation. Over a chain of stages it builds up a structured understanding of how the product goes together. Each stage writes structured output that the next stage reads, so every decision can be inspected and explained.
+
+```mermaid
+flowchart TD
+    A[Assembly manual PDF] --> B[PDF page extraction]
+    B --> C[Vision reading<br/>parts, fittings, counts, sizes, actions per page]
+
+    subgraph U[Understanding]
+        D[Assembly delta detection<br/>what changed from page to page]
+        E[Assembly action extraction]
+        F[Object identity resolution<br/>the same part across pages]
+        G[Action replication<br/>Repeat x4, identical parts]
+        H[Universal Assembly Graph]
+        D --> E --> F --> G --> H
+    end
+
+    subgraph P[Animation planning]
+        I[Motion planner]
+        J[Part shapes and roles]
+        K[Scene layout engine]
+        L[Sub-assembly staging]
+        M[Procedural proxy geometry]
+        I --> J --> K --> L --> M
+    end
+
+    C --> D
+    H --> I
+    M --> N[Blender scene generator]
+    N --> O[Headless Blender rendering]
+    O --> Q[Captioned MP4 video]
+```
+
+### The stages
+
+1. **PDF page extraction.** Each page of the manual becomes an image.
+2. **Vision reading.** A vision model reads every page and records the parts and fittings drawn, how many of each, the sizes where they are printed, and the action on that page (insert, attach, screw, turn over). Each page is checked against a strict schema, and every part, fitting and diagram gets a stable ID.
+3. **Assembly delta detection.** Pages are compared one after another to find what was added at each step.
+4. **Assembly action extraction.** The changes become actions: which part or fitting joins which, and how. Where a page shows only the screws, the joined parts are worked out from the evidence.
+5. **Object identity resolution.** The same part is tracked across pages, so the "side panel" on page 3 and on page 12 is one object, and each action is pointed at the right instance.
+6. **Action replication.** "Repeat x4", or one leg drawn when four get fitted, becomes the right number of actions across the matching parts, capped at what the manual shows.
+7. **Universal Assembly Graph.** All parts, fittings and joins go into one graph of what connects to what, and in what order. It is built twice: once from the raw actions and again after identity resolution and replication.
+8. **Motion planning.** Each part is given exactly one step at which it moves, plus the direction it comes from.
+9. **Part shapes and roles.** Every part gets a role from its name (leg, rail, side panel, shelf, door, drawer front, slat, cushion, ...) and a size from the manual's measurements, or from sensible defaults for that role when none are printed. Curved parts keep the outline traced from the drawings.
+10. **Scene layout engine.** One general layout places every product. It treats the piece as a frame of uprights, walls, beams, plates and blocks: walls stand on the floor, rails stretch between the parts they join, shelves sit between side walls, doors and drawers fill the front opening, and brackets go into inside corners. The assembly graph decides where each part goes. Name words like *left*, *front* or *top* only break ties.
+11. **Sub-assembly staging.** Parts built separately, such as a drawer or a chaise base with its feet, are put together beside the main piece and then move into place as one unit. A piece built upside down is turned over at the end.
+12. **Procedural proxy geometry.** Clean 3D shapes are made to the right size, including extruded outlines for bentwood frames and curved slats.
+13. **Blender scene generation.** A Blender Python script is generated with the parts, materials, lighting, a camera that circles the piece, and a timeline that merges repeated moves.
+14. **Headless rendering.** Blender renders the frames with no window open.
+15. **Video.** MoviePy joins the frames into an MP4, with a caption for each step and the product's name at the top.
+
+### What makes it general
+
+- **Nothing is special-cased.** Every example went through the same stages, with no per-product code or hand-placed parts.
+- **Explainable.** Every stage's output is structured, so a wrong part position can be traced back to the page and the action it came from.
+- **Robust to missing information.** It estimates sizes when the manual prints none, infers joins when only screws are shown, and expands "repeat" steps.
 
 ## Examples
 
@@ -107,6 +171,37 @@ The same system handles every product above. Nothing is set up by hand for a par
 - Parts are shown as clean, simplified 3D shapes in the right size and place, not photo-realistic models.
 - Manuals that are mostly text, or scanned at low quality, give weaker results than clear line drawings.
 
+## How the project grew
+
+The first version was an experimental MVP built on **Azure AI Foundry and Azure OpenAI GPT-4o Vision**, with a Streamlit front end. It proved that the whole chain worked, from PDF to graph to Blender to MP4. But the parts were generic boxes, the motion was functional rather than realistic, and complex manuals confused it.
+
+The current version keeps the staged architecture and rebuilds most of it:
+
+| | First MVP | Now |
+|---|---|---|
+| Manual reading | Azure GPT-4o Vision | Gemini vision, checked against a strict per-page schema |
+| Layout | Exploded ring of parts | One general layout that builds the real frame for every product |
+| Geometry | Generic proxy boxes | Parts sized from the manual, with curved outlines traced from the drawings |
+| Motion | One part at a time | Repeated moves merged, separately built parts moved as one unit, a final turn-over |
+| Video | Plain render | Step captions with fitting counts, product title, a camera that ends at the front |
+| Interface | Local Streamlit app | Public website with a gallery, a synced studio view and live uploads |
+| Quality checks | Manual | Continuous integration runs every example manual through the pipeline on each change |
+
+## Lessons learned
+
+- **Most of the work is understanding, not rendering.** Drawing 3D boxes is easy. Knowing which box goes where, and when, is the hard part.
+- **Structure beats one big prompt.** Splitting the problem into small stages with structured outputs made errors visible and fixable.
+- **Generalise, don't special-case.** Each new kind of furniture (beds, wardrobes, sofas) was handled by improving the one general layout, not by adding a layout for that product.
+- **Manuals leave things out.** Sizes, counts and joins are often only implied, so the pipeline has to infer them on purpose.
+
+## Roadmap
+
+- **Understanding:** multi-view reasoning, and better handling of dense, text-heavy pages.
+- **Graphics:** CAD-aware and parametric parts, and more realistic materials.
+- **Animation:** collision-aware motion, and tool animations (an Allen key turning).
+- **Experience:** voice narration, step-by-step playback controls, and uploads that are always on.
+- **Products:** beyond furniture, to bicycles, gym equipment, toys and DIY kits.
+
 ## FAQ
 
 **Does it work with any brand?**
@@ -125,8 +220,10 @@ The source is private. This repository shows what the project does: the demo, th
 
 - **Python**
 - **Blender** for 3D modelling, animation and rendering
-- **Google Gemini** (vision) for reading the manuals' drawings
+- **Google Gemini** (vision) for reading the manuals' drawings (the first MVP used Azure OpenAI GPT-4o Vision on Azure AI Foundry)
+- **Blender Python (bpy)** scripts generated by the pipeline
 - **MoviePy** for the final video and its captions
+- **GitHub Actions** for continuous integration
 - **Cloudflare Workers and Durable Objects** for the website and uploads
 - **HTML, CSS and JavaScript** for the site, with no framework
 
