@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="790" viewBox="0 0 1200 790" font-family="Segoe UI, -apple-system, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="790" rx="18" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="1199" height="789" rx="18" fill="none" stroke="#e2e8f0"/>
+
+  <!-- Title -->
+  <text x="30" y="46" font-size="24" font-weight="700" fill="#0f172a">System architecture</text>
+  <text x="30" y="72" font-size="14" fill="#64748b">From a wordless PDF manual to a captioned 3D assembly video. Each stage writes structured output the next one reads.</text>
+
+  <!-- ============ Pipeline columns ============ -->
+  <!-- 1 Input -->
+  <g filter="url(#shadow)">
+    <rect x="30" y="96" width="206" height="350" rx="14" fill="#f8fafc" stroke="#e2e8f0"/>
+  </g>
+  <rect x="30" y="96" width="206" height="42" rx="14" fill="#334155"/>
+  <rect x="30" y="124" width="206" height="14" fill="#334155"/>
+  <text x="133" y="123" font-size="14" font-weight="700" fill="#fff" text-anchor="middle" letter-spacing="1">1 · INPUT</text>
+  <g font-size="13" fill="#0f172a" text-anchor="middle">
+    <rect x="44" y="152" width="178" height="62" rx="10" fill="#fff" stroke="#cbd5e1"/>
+    <text x="133" y="178" font-weight="600">Assembly manual</text>
+    <text x="133" y="197" fill="#64748b" font-size="12">PDF, any brand</text>
+    <rect x="44" y="226" width="178" height="62" rx="10" fill="#fff" stroke="#cbd5e1"/>
+    <text x="133" y="252" font-weight="600">Page images</text>
+    <text x="133" y="271" fill="#64748b" font-size="12">one per page</text>
+    <rect x="44" y="300" width="178" height="62" rx="10" fill="#fff" stroke="#cbd5e1"/>
+    <text x="133" y="326" font-weight="600">Upload checks</text>
+    <text x="133" y="345" fill="#64748b" font-size="12">size and page limits</text>
+  </g>
+  <text x="133" y="430" font-size="12" fill="#64748b" text-anchor="middle">from the website or locally</text>
+
+  <!-- 2 Read -->
+  <g filter="url(#shadow)">
+    <rect x="266" y="96" width="206" height="350" rx="14" fill="#eef2ff" stroke="#c7d2fe"/>
+  </g>
+  <rect x="266" y="96" width="206" height="42" rx="14" fill="#4f46e5"/>
+  <rect x="266" y="124" width="206" height="14" fill="#4f46e5"/>
+  <text x="369" y="123" font-size="14" font-weight="700" fill="#fff" text-anchor="middle" letter-spacing="1">2 · READ (AI)</text>
+  <g font-size="13" fill="#1e1b4b" text-anchor="middle">
+    <rect x="280" y="152" width="178" height="62" rx="10" fill="#fff" stroke="#a5b4fc"/>
+    <text x="369" y="178" font-weight="600">Multimodal LLM</text>
+    <text x="369" y="197" fill="#4338ca" font-size="12">Gemini or OpenAI GPT</text>
+    <rect x="280" y="226" width="178" height="62" rx="10" fill="#fff" stroke="#a5b4fc"/>
+    <text x="369" y="248" font-weight="600">Parts, fittings, sizes</text>
+    <text x="369" y="267" fill="#4338ca" font-size="12">counts, "Repeat x4",</text>
+    <text x="369" y="282" fill="#4338ca" font-size="12">actions per step</text>
+    <rect x="280" y="300" width="178" height="62" rx="10" fill="#fff" stroke="#a5b4fc"/>
+    <text x="369" y="326" font-weight="600">Strict schema</text>
+    <text x="369" y="345" fill="#4338ca" font-size="12">validated, stable IDs</text>
+  </g>
+  <text x="369" y="430" font-size="12" fill="#4338ca" text-anchor="middle">structured output, not free text</text>
+
+  <!-- 3 Understand -->
+  <g filter="url(#shadow)">
+    <rect x="502" y="96" width="206" height="350" rx="14" fill="#ecfdf5" stroke="#a7f3d0"/>
+  </g>
+  <rect x="502" y="96" width="206" height="42" rx="14" fill="#059669"/>
+  <rect x="502" y="124" width="206" height="14" fill="#059669"/>
+  <text x="605" y="123" font-size="14" font-weight="700" fill="#fff" text-anchor="middle" letter-spacing="1">3 · UNDERSTAND</text>
+  <g font-size="13" fill="#064e3b" text-anchor="middle">
+    <rect x="516" y="152" width="178" height="44" rx="10" fill="#fff" stroke="#6ee7b7"/>
+    <text x="605" y="179" font-weight="600">Step-to-step changes</text>
+    <rect x="516" y="204" width="178" height="44" rx="10" fill="#fff" stroke="#6ee7b7"/>
+    <text x="605" y="231" font-weight="600">Joins between parts</text>
+    <rect x="516" y="256" width="178" height="44" rx="10" fill="#fff" stroke="#6ee7b7"/>
+    <text x="605" y="283" font-weight="600">Same part across pages</text>
+    <rect x="516" y="308" width="178" height="44" rx="10" fill="#fff" stroke="#6ee7b7"/>
+    <text x="605" y="335" font-weight="600">Repeats expanded</text>
+    <rect x="516" y="360" width="178" height="46" rx="10" fill="#059669"/>
+    <text x="605" y="388" font-weight="700" fill="#fff">Assembly graph</text>
+  </g>
+  <text x="605" y="430" font-size="12" fill="#047857" text-anchor="middle">what joins what, and when</text>
+
+  <!-- 4 Plan -->
+  <g filter="url(#shadow)">
+    <rect x="738" y="96" width="206" height="350" rx="14" fill="#fffbeb" stroke="#fde68a"/>
+  </g>
+  <rect x="738" y="96" width="206" height="42" rx="14" fill="#d97706"/>
+  <rect x="738" y="124" width="206" height="14" fill="#d97706"/>
+  <text x="841" y="123" font-size="14" font-weight="700" fill="#fff" text-anchor="middle" letter-spacing="1">4 · PLAN IN 3D</text>
+  <g font-size="13" fill="#78350f" text-anchor="middle">
+    <rect x="752" y="152" width="178" height="44" rx="10" fill="#fff" stroke="#fcd34d"/>
+    <text x="841" y="179" font-weight="600">Part roles and sizes</text>
+    <rect x="752" y="204" width="178" height="62" rx="10" fill="#fff" stroke="#fcd34d"/>
+    <text x="841" y="229" font-weight="600">General layout engine</text>
+    <text x="841" y="248" fill="#b45309" font-size="12">one for every product</text>
+    <rect x="752" y="274" width="178" height="62" rx="10" fill="#fff" stroke="#fcd34d"/>
+    <text x="841" y="299" font-weight="600">Motion plan</text>
+    <text x="841" y="318" fill="#b45309" font-size="12">sub-assemblies, turn-over</text>
+    <rect x="752" y="344" width="178" height="62" rx="10" fill="#fff" stroke="#fcd34d"/>
+    <text x="841" y="369" font-weight="600">Procedural geometry</text>
+    <text x="841" y="388" fill="#b45309" font-size="12">sized, curved outlines</text>
+  </g>
+  <text x="841" y="430" font-size="12" fill="#b45309" text-anchor="middle">no hand-placed parts</text>
+
+  <!-- 5 Render -->
+  <g filter="url(#shadow)">
+    <rect x="974" y="96" width="196" height="350" rx="14" fill="#fff1f2" stroke="#fecdd3"/>
+  </g>
+  <rect x="974" y="96" width="196" height="42" rx="14" fill="#e11d48"/>
+  <rect x="974" y="124" width="196" height="14" fill="#e11d48"/>
+  <text x="1072" y="123" font-size="14" font-weight="700" fill="#fff" text-anchor="middle" letter-spacing="1">5 · RENDER</text>
+  <g font-size="13" fill="#881337" text-anchor="middle">
+    <rect x="988" y="152" width="168" height="62" rx="10" fill="#fff" stroke="#fda4af"/>
+    <text x="1072" y="178" font-weight="600">Blender scene</text>
+    <text x="1072" y="197" fill="#be123c" font-size="12">generated as code</text>
+    <rect x="988" y="226" width="168" height="62" rx="10" fill="#fff" stroke="#fda4af"/>
+    <text x="1072" y="252" font-weight="600">Headless render</text>
+    <text x="1072" y="271" fill="#be123c" font-size="12">camera, close-ups</text>
+    <rect x="988" y="300" width="168" height="62" rx="10" fill="#e11d48"/>
+    <text x="1072" y="326" font-weight="700" fill="#fff">Captioned MP4</text>
+    <text x="1072" y="345" fill="#ffe4e6" font-size="12">title, step captions</text>
+  </g>
+  <text x="1072" y="430" font-size="12" fill="#be123c" text-anchor="middle">20 to 60 s videos</text>
+
+  <!-- arrows between columns -->
+  <g stroke="#64748b" stroke-width="2.5" fill="none" marker-end="url(#arrow)">
+    <line x1="238" y1="271" x2="263" y2="271"/>
+    <line x1="474" y1="271" x2="499" y2="271"/>
+    <line x1="710" y1="271" x2="735" y2="271"/>
+    <line x1="946" y1="271" x2="971" y2="271"/>
+  </g>
+
+  <!-- ============ Bottom panels ============ -->
+  <!-- Platform -->
+  <g filter="url(#shadow)">
+    <rect x="30" y="478" width="560" height="270" rx="14" fill="#f8fafc" stroke="#e2e8f0"/>
+  </g>
+  <text x="50" y="510" font-size="15" font-weight="700" fill="#0f172a" letter-spacing="1">PLATFORM</text>
+  <text x="50" y="530" font-size="12" fill="#64748b">Free hosting, rendering on the author's own machine</text>
+  <g font-size="13" text-anchor="middle" fill="#0f172a">
+    <rect x="50" y="556" width="150" height="92" rx="10" fill="#fff" stroke="#cbd5e1"/>
+    <text x="125" y="590" font-weight="600">Visitor</text>
+    <text x="125" y="609" fill="#64748b" font-size="12">gallery, studio,</text>
+    <text x="125" y="625" fill="#64748b" font-size="12">upload a manual</text>
+    <rect x="232" y="556" width="150" height="92" rx="10" fill="#fff" stroke="#cbd5e1"/>
+    <text x="307" y="584" font-weight="600">Website + API</text>
+    <text x="307" y="603" fill="#64748b" font-size="12">serverless workers,</text>
+    <text x="307" y="619" fill="#64748b" font-size="12">job queue, storage</text>
+    <rect x="414" y="556" width="156" height="92" rx="10" fill="#fff" stroke="#cbd5e1"/>
+    <text x="492" y="584" font-weight="600">Render worker</text>
+    <text x="492" y="603" fill="#64748b" font-size="12">picks up jobs, runs</text>
+    <text x="492" y="619" fill="#64748b" font-size="12">the pipeline above</text>
+  </g>
+  <g stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow)">
+    <line x1="202" y1="590" x2="229" y2="590"/>
+    <line x1="229" y1="618" x2="202" y2="618"/>
+    <line x1="384" y1="590" x2="411" y2="590"/>
+    <line x1="411" y1="618" x2="384" y2="618"/>
+  </g>
+  <text x="310" y="680" font-size="12" fill="#64748b" text-anchor="middle">PDF goes in, progress and the finished video come back.</text>
+  <text x="310" y="700" font-size="12" fill="#64748b" text-anchor="middle">The browser only ever sees titles, captions and part names.</text>
+  <text x="310" y="728" font-size="12" font-weight="600" fill="#0f172a" text-anchor="middle">Running cost: $0 per month</text>
+
+  <!-- Quality -->
+  <g filter="url(#shadow)">
+    <rect x="610" y="478" width="560" height="270" rx="14" fill="#f0f9ff" stroke="#bae6fd"/>
+  </g>
+  <text x="630" y="510" font-size="15" font-weight="700" fill="#0c4a6e" letter-spacing="1">QUALITY LOOP</text>
+  <text x="630" y="530" font-size="12" fill="#0369a1">Every change is measured, not eyeballed</text>
+  <g font-size="13" text-anchor="middle" fill="#0c4a6e">
+    <rect x="630" y="556" width="164" height="110" rx="10" fill="#fff" stroke="#7dd3fc"/>
+    <text x="712" y="586" font-weight="600">CI on every change</text>
+    <text x="712" y="607" fill="#0369a1" font-size="12">24 real manuals run</text>
+    <text x="712" y="623" fill="#0369a1" font-size="12">through the pipeline</text>
+    <text x="712" y="639" fill="#0369a1" font-size="12">in parallel</text>
+    <rect x="808" y="556" width="164" height="110" rx="10" fill="#fff" stroke="#7dd3fc"/>
+    <text x="890" y="586" font-weight="600">Layout regression</text>
+    <text x="890" y="607" fill="#0369a1" font-size="12">every part's position</text>
+    <text x="890" y="623" fill="#0369a1" font-size="12">snapshotted, plus</text>
+    <text x="890" y="639" fill="#0369a1" font-size="12">physical sanity checks</text>
+    <rect x="986" y="556" width="164" height="110" rx="10" fill="#fff" stroke="#7dd3fc"/>
+    <text x="1068" y="586" font-weight="600">LLM evaluation</text>
+    <text x="1068" y="607" fill="#0369a1" font-size="12">prompt versions scored</text>
+    <text x="1068" y="623" fill="#0369a1" font-size="12">against hand-checked</text>
+    <text x="1068" y="639" fill="#0369a1" font-size="12">manuals</text>
+  </g>
+  <text x="890" y="700" font-size="12" fill="#0369a1" text-anchor="middle">A part that moves in any other manual is flagged before it ships,</text>
+  <text x="890" y="720" font-size="12" fill="#0369a1" text-anchor="middle">so a fix for wardrobes can't silently break tables.</text>
+
+  <text x="600" y="774" font-size="12" fill="#94a3b8" text-anchor="middle">Nothing is special-cased per product: every manual goes through the same stages.</text>
+</svg>
